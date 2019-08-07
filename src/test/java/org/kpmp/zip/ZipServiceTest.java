@@ -119,6 +119,40 @@ public class ZipServiceTest extends ZipService {
 	}
 
 	@Test
+	public void testMain_whenMultipleFilesMultipleOptions() throws Exception {
+		Path parentDirectory = Files.createTempDirectory("234");
+		File attachment1Path = File.createTempFile("fornax", ".txt", parentDirectory.toFile());
+		attachment1Path.deleteOnExit();
+		File attachment2Path = File.createTempFile("fornax2", ".txt", parentDirectory.toFile());
+		attachment2Path.deleteOnExit();
+		String zipFileLocation = parentDirectory.toString() + File.separator + "testZipFile.zip";
+
+		try {
+			ZipService.main("--zip.zipFilePath=" + zipFileLocation, "--zip.additionalFileData=filename|data",
+					"--zip.fileNames=" + attachment1Path.getAbsolutePath(),
+					"--zip.fileNames=" + attachment2Path.getAbsolutePath());
+
+			File zipFile = new File(zipFileLocation);
+			assertEquals(true, zipFile.exists());
+			ZipFile zip = new ZipFile(zipFileLocation);
+			assertEquals(3, zip.size());
+			Enumeration<? extends ZipEntry> entries = zip.entries();
+			List<String> filenames = new ArrayList<>();
+			while (entries.hasMoreElements()) {
+				ZipEntry entry = entries.nextElement();
+				filenames.add(entry.getName());
+			}
+
+			assertEquals(true, filenames.contains("filename"));
+			assertEquals(true, filenames.contains(attachment1Path.getName()));
+			assertEquals(true, filenames.contains(attachment2Path.getName()));
+			zip.close();
+		} catch (Exception e) {
+			fail("Should have zipped successfully");
+		}
+	}
+
+	@Test
 	public void testMain_whenNoAdditionalFileData() throws Exception {
 		Path parentDirectory = Files.createTempDirectory("234");
 		File attachment1Path = File.createTempFile("fornax", ".txt", parentDirectory.toFile());
