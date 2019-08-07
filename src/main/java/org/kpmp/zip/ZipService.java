@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,37 +12,61 @@ import java.util.Set;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class ZipService {
+@SpringBootApplication
+public class ZipService implements ApplicationRunner {
 
 	private static final String TMP_FILE_EXTENSION = ".tmp";
 
-	public static void main(String[] args) {
-		// get the args
-		// create a new ZipService object
-
-		List<String> files = Arrays.asList("/Users/rlreamy/temp/barcodes.tsv", "/Users/rlreamy/temp/genes.tsv");
-
-		ZipService zipper = new ZipService();
-		try {
-			zipper.zipFiles("/Users/rlreamy/temp/ziptest/test.zip", files);
-//			Map<String, String> additionalInfo = new HashMap<String, String>();
-//			additionalInfo.put("metadata.json", "{here is the data}");
-//			zipper.zipFiles("/Users/rlreamy/temp/ziptest/testAdditional.zip", files, additionalInfo);
-			// log that the zip file was created (and timing?)
-		} catch (IOException e) {
-			// TODO Log the error
-			System.err.println("Trouble zipping: " + e.getMessage());
-		}
+	public static void main(String... args) {
+		SpringApplication.run(ZipService.class, args);
 	}
 
-	public void zipFiles(String zipFilePath, List<String> filePaths, Map<String, String> additionalFileInformation)
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+
+		List<String> filePaths = args.getOptionValues("zip.fileNames");
+		if (filePaths == null || filePaths.size() <= 0) {
+			// log error
+			throw new IllegalArgumentException("No files to zip");
+		}
+
+		List<String> zipFilePath = args.getOptionValues("zip.zipFilePath");
+		if (zipFilePath == null || zipFilePath.size() <= 0) {
+			// log error
+			throw new IllegalArgumentException("Missing zip file name and path");
+		}
+
+		List<String> additionalFileDatas = args.getOptionValues("zip.additionalFileData");
+		Map<String, String> additionalFileInformation = new HashMap<String, String>();
+		if (additionalFileDatas != null) {
+			for (String additionalFileData : additionalFileDatas) {
+				if (!additionalFileData.contains("|")) {
+					// log error
+					throw new IllegalArgumentException("Missing filename in additional data");
+				} else {
+					String[] fileParts = additionalFileData.split("\\|");
+					additionalFileInformation.put(fileParts[0], fileParts[1]);
+				}
+			}
+		}
+
+		try {
+			zipFiles(zipFilePath.get(0), filePaths, additionalFileInformation);
+		} catch (IOException e) {
+			// log error
+			throw e;
+		}
+
+	}
+
+	void zipFiles(String zipFilePath, List<String> filePaths, Map<String, String> additionalFileInformation)
 			throws IOException {
 		createZipFile(zipFilePath, filePaths, additionalFileInformation);
-	}
-
-	public void zipFiles(String zipFilePath, List<String> filePaths) throws IOException {
-		createZipFile(zipFilePath, filePaths, new HashMap<String, String>());
 	}
 
 	private void createZipFile(String zipFilePath, List<String> filePaths,
@@ -86,4 +109,5 @@ public class ZipService {
 			tempZipFileHandle.renameTo(zipFileHandle);
 		}
 	}
+
 }
