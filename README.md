@@ -8,3 +8,6 @@ Arguments:
 zip.fileNames          : Contains the full path to a file that belongs in the zip file.  Specify once for each file to be added to the zip.
 zip.zipFilePath        : Contains the full path and filename for the zip file you want creted.
 zip.additionalFileData : Optional.  Specify when you need additional data added to the zip file that isn't already in a file.  Value should be specified as <filename>|<file data>
+
+Example to run it:
+java -jar fornax.jar --zip.fileNames=/Users/rlreamy/temp/barcodes.tsv --zip.zipFilePath=/Users/rlreamy/temp/test.zip
