@@ -56,7 +56,7 @@ public class ZipService implements ApplicationRunner {
 							"ERROR: --zip.additionalFileData malformed.  Argument should be in form \"filename|data for file\"");
 					throw new IllegalArgumentException("Missing filename in additional data");
 				} else {
-					String[] fileParts = additionalFileData.split("\\|");
+					String[] fileParts = additionalFileData.split("\\|", 2);
 					additionalFileInformation.put(fileParts[0], fileParts[1]);
 				}
 			}
