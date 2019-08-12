@@ -43,7 +43,6 @@ dependencies {
 
 task unpack(type: Copy) {
     dependsOn bootJar
-    println tasks.bootJar.outputs.files.singleFile
     from(zipTree(tasks.bootJar.outputs.files.singleFile))
     into("build/dependency")
 }
