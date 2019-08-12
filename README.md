@@ -11,3 +11,14 @@ zip.additionalFileData : Optional.  Specify when you need additional data added 
 
 Example to run it:
 java -jar fornax.jar --zip.fileNames=/Users/rlreamy/temp/barcodes.tsv --zip.zipFilePath=/Users/rlreamy/temp/test.zip
+
+
+## Building the docker image
+The gradle build file contains information on how to build a docker image.
+
+./gradlew build docker
+docker push kingstonduo/fornax
+
+
+After creating a container, you can run the zip service like this:
+docker run -d -v /data:/data kingstonduo/fornax --zip.fileNames="/data/dataLake/package_0d51faeb-b6bc-4203-91c7-32c28101aa91/Screen Shot 2019-07-10 at 10.35.45 AM.png" --zip.zipFilePath=/data/dataLake/package_0d51faeb-b6bc-4203-91c7-32c28101aa91/test2.zip --zip.additionalFileData="filename.txt|Data for file"
