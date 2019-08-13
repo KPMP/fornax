@@ -30,3 +30,5 @@ build
 
 # Eclipse files
 .settings
+.project
+.classpath
