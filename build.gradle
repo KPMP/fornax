@@ -23,7 +23,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.palantir.docker'
 
 jar {
-    baseName='fornax'
+    baseName='zipWorker'
     version= '0.1'
 }
 
