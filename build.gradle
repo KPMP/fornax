@@ -23,7 +23,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.palantir.docker'
 
 jar {
-    baseName='zipWorker'
+    baseName='zipworker'
     version= '0.1'
 }
 
@@ -48,7 +48,7 @@ task unpack(type: Copy) {
 }
 
 docker {
-    name "${project.group}/${bootJar.baseName}"
+    name "${project.group}/${jar.baseName}"
     copySpec.from(tasks.unpack.outputs).into("dependency")
     buildArgs(['DEPENDENCY': "dependency"])
 }
