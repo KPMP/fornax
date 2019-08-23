@@ -10,7 +10,7 @@ zip.zipFilePath        : Contains the full path and filename for the zip file yo
 zip.additionalFileData : Optional.  Specify when you need additional data added to the zip file that isn't already in a file.  Value should be specified as <filename>|<file data>
 
 Example to run it:
-java -jar fornax.jar --zip.fileNames=/Users/rlreamy/temp/barcodes.tsv --zip.zipFilePath=/Users/rlreamy/temp/test.zip --zip.additionalFileData="metadata.json|data to include in the additional file"
+java -jar zipWorker.jar --zip.fileNames=/Users/rlreamy/temp/barcodes.tsv --zip.zipFilePath=/Users/rlreamy/temp/test.zip --zip.additionalFileData="metadata.json|data to include in the additional file"
 
 ## Building the docker image
 The gradle build file contains information on how to build a docker image.
