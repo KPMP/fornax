@@ -15,14 +15,14 @@ java -jar zipWorker.jar --zip.fileNames=/Users/rlreamy/temp/barcodes.tsv --zip.z
 ## Building the docker image
 The gradle build file contains information on how to build a docker image.
 
-./gradlew build docker
-docker push kingstonduo/zipWorker
+'./gradlew build docker'
+'docker push kingstonduo/zipWorker'
 
-## Pulling down the fornax container
-docker pull kingstonduo/zipWorker
+## Pulling down the zipWorker (previously fornax) container
+'docker pull kingstonduo/fornax'
 
 ## Using the container to zip files
-docker run -d -v /data:/data kingstonduo/zipWorker --zip.fileNames="/data/dataLake/package_0d51faeb-b6bc-4203-91c7-32c28101aa91/Screen Shot 2019-07-10 at 10.35.45 AM.png" --zip.zipFilePath=/data/dataLake/package_0d51faeb-b6bc-4203-91c7-32c28101aa91/test2.zip --zip.additionalFileData="filename.txt|Data for file"
+`docker run -d -v /data:/data kingstonduo/fornax --zip.fileNames="/data/dataLake/package_0d51faeb-b6bc-4203-91c7-32c28101aa91/Screen Shot 2019-07-10 at 10.35.45 AM.png" --zip.zipFilePath=/data/dataLake/package_0d51faeb-b6bc-4203-91c7-32c28101aa91/test2.zip --zip.additionalFileData="filename.txt|Data for file"`
 
 ### Breaking the command down
 'docker run' is used to start a container
