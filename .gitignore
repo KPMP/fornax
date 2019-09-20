@@ -32,3 +32,5 @@ build
 .settings
 .project
 .classpath
+/.metadata/
+bin/
