@@ -24,7 +24,7 @@ apply plugin: 'com.palantir.docker'
 
 jar {
     baseName='zipworker'
-    version= '0.1'
+    version= '0.2'
 }
 
 repositories {
